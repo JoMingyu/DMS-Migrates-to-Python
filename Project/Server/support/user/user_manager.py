@@ -9,10 +9,11 @@ def get_uid_from_request(request, session):
     elif 'UserSession' in request.cookies:
         sid = request.cookies['UserSession']
 
-    return student_acc.find_one({'sid': sid})['uid']
+    data = student_acc.find_one({'sid': sid})
+    return data['uid'] if data else None
 
 
-def check_admin_from_request(request, session):
+def get_admin_id_from_request(request, session):
     sid = None
 
     if 'AdminSession' in session:
@@ -20,4 +21,5 @@ def check_admin_from_request(request, session):
     elif 'AdminSession' in request.cookies:
         sid = request.cookies['AdminSession']
 
-    return True if admin_acc.find_one({'sid': sid}) else False
+    data = admin_acc.find_one({'sid': sid})
+    return data['id'] if data else None
