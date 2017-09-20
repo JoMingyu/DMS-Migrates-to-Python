@@ -3,18 +3,7 @@
 from flask import Flask, request
 from flask_restful import Api
 
-from routes.api.admin.account import account
-# from routes.api.admin.apply_xlsx import *
-# from routes.api.admin.post import *
-#
-# from routes.api.developer.dms import *
-# from routes.api.developer.initializer import *
-#
-# from routes.api.student.account import *
-# from routes.api.student.apply import *
-# from routes.api.student.dms import *
-# from routes.api.student.post import *
-# from routes.api.student.school_data import *
+from routes.api import *
 
 app = Flask(__name__)
 api = Api(app)
@@ -63,10 +52,33 @@ def teardown_appcontext(exception):
     logger.info('--- Teardown appcontext')
 
 
-def add_resources():
+def add_admin_resources():
+    from routes.api.admin.account import account, initializer
+    from routes.api.admin.apply_xlsx import afterschool_xlsx, extension_xlsx, goingout_xlsx, report_facility_xlsx, stay_xlsx
+    from routes.api.admin.post import faq, notice, rule
+
     api.add_resource(account.AddAccount, '/admin/add-account')
+    api.add_resource(account.SignIn, '/admin/signin')
+    api.add_resource(account.Logout, '/admin/logout')
+    api.add_resource(initializer.InitializeStudent, '/admin/initialize-student')
+
+    api.add_resource(faq.FAQ, '/admin/faq')
+    api.add_resource(notice.Notice, '/admin/notice')
+    api.add_resource(rule.Rule, '/admin/rule')
+
+
+def add_developer_resources():
+    pass
+
+
+def add_student_resources():
+    pass
 
 
 if __name__ == '__main__':
-    add_resources()
+    add_admin_resources()
+    add_developer_resources()
+    add_student_resources()
+
+    app.secret_key = 'qlalfclsrn'
     app.run()
