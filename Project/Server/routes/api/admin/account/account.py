@@ -16,14 +16,14 @@ class AddAccount(Resource):
         _id = aes.encrypt(request.form.get('id'))
         pw = sha.encrypt(request.form.get('pw'))
         owner = aes.encrypt(request.form.get('owner', '주인 없음', str))
-
         if admin_acc.find_one({'id': _id}):
             return '', 204
         else:
             admin_acc.insert({
                 'id': _id,
                 'pw': pw,
-                'owner': owner
+                'owner': owner,
+                'sid': None
             })
 
             return '', 201
@@ -38,10 +38,17 @@ class SignIn(Resource):
         if admin_acc.find_one({'id': _id, 'pw': pw}):
             resp = Response('', 201)
             sid = str(uuid.uuid4())
+
             if keep_login:
                 resp.set_cookie('AdminSession', sid)
             else:
                 session['AdminSession'] = sid
+
+            data = dict(admin_acc.find_one({'id': _id}))
+            data.update({
+                'sid': sid
+            })
+            admin_acc.update({'id': _id}, data)
 
             return resp
         else:
