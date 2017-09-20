@@ -1,4 +1,4 @@
-from flask import request, session
+from flask import request, session, abort
 from flask_restful import Resource
 
 from support.user.user_manager import get_admin_id_from_request
@@ -10,7 +10,7 @@ from pymongo.collection import ObjectId
 class FAQ(Resource):
     def post(self):
         if not get_admin_id_from_request(request, session):
-            return '', 403
+            abort(403)
 
         title = request.form.get('title')
         content = request.form.get('content')
@@ -24,7 +24,7 @@ class FAQ(Resource):
 
     def delete(self):
         if not get_admin_id_from_request(request, session):
-            return '', 403
+            abort(403)
 
         _id = request.form.get('_id')
 
@@ -44,7 +44,7 @@ class FAQ(Resource):
 
     def patch(self):
         if not get_admin_id_from_request(request, session):
-            return '', 403
+            abort(403)
 
         _id = request.form.get('_id')
         title = request.form.get('title')
