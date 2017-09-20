@@ -2,7 +2,7 @@ from database.mongodb import student_acc, admin_acc
 
 
 def get_uid_from_request(request, session):
-    sid = None
+    sid = ''
 
     if 'UserSession' in session:
         sid = session['UserSession']
@@ -14,7 +14,7 @@ def get_uid_from_request(request, session):
 
 
 def get_admin_id_from_request(request, session):
-    sid = None
+    sid = ''
 
     if 'AdminSession' in session:
         sid = session['AdminSession']
