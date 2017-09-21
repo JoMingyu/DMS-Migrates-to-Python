@@ -1,10 +1,31 @@
-from flask import request, abort
+from flask import request
 from flask_restful import Resource
-import uuid
+import uuid as _uuid
 
 from support.crypto import *
 
 from database.mongodb import student_acc
+
+
+class NewUUID(Resource):
+    """
+    새로운 UUID 생성
+    """
+    def post(self):
+        number = request.form.get('number', type=int)
+        name = request.form.get('name')
+        uuid = str(_uuid.uuid4())
+
+        student_acc.insert({
+            'id': None,
+            'pw': None,
+            'sid': None,
+            'uuid': sha.encrypt(uuid),
+            'number': aes.encrypt(number),
+            'name': aes.encrypt(name)
+        })
+
+        return _uuid, 201
 
 
 class Migration(Resource):
@@ -45,7 +66,7 @@ class Migration(Resource):
             # some logic..
             return data
 
-        def change_student_data(_uuid, number_for_change):
+        def change_student_data(uuid, number_for_change):
             data = dict(student_acc.find_one({'uuid': sha.encrypt(uuid)}))
             data.update({
                 'number': aes.encrypt(number_for_change)
@@ -58,7 +79,7 @@ class Migration(Resource):
         new_data = read_new_data()
 
         for legacy_idx, legacy in enumerate(legacy_data):
-            legacy_number, legacy_name, _uuid = legacy
+            legacy_number, legacy_name, uuid = legacy
             assert legacy_number == int
 
             for new_idx, new in enumerate(new_data):
@@ -66,7 +87,7 @@ class Migration(Resource):
                 assert new_number == int
 
                 if legacy_name == new_name and legacy_number / 10000 + 1 == new_number / 10000:
-                    change_student_data(_uuid, new_number)
+                    change_student_data(uuid, new_number)
 
                     del legacy_data[legacy_idx]
                     del new_data[new_idx]
