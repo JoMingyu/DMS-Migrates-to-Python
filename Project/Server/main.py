@@ -58,8 +58,8 @@ def add_admin_resources():
     from routes.api.admin.post import faq, notice, rule
 
     api.add_resource(account.AddAccount, '/admin/add-account')
-    api.add_resource(account.SignIn, '/admin/signin')
-    api.add_resource(account.Logout, '/admin/logout')
+    api.add_resource(account.AdminSignIn, '/admin/signin')
+    api.add_resource(account.AdminLogout, '/admin/logout')
     api.add_resource(initializer.InitializeStudent, '/admin/initialize-student')
 
     api.add_resource(faq.FAQ, '/admin/faq')
@@ -68,11 +68,25 @@ def add_admin_resources():
 
 
 def add_developer_resources():
-    pass
+    from routes.api.developer.dms import bug_report
+    from routes.api.developer.initializer import account
+
+    api.add_resource(account.NewUUID, '/developer/new-uuid')
+    api.add_resource(account.Migration, '/developer/migration')
 
 
 def add_student_resources():
-    pass
+    from routes.api.student.account import account
+    from routes.api.student.apply import afterschool, extension, goingout, stay
+    from routes.api.student.post import faq, notice, rule
+
+    api.add_resource(account.Signup, '/signup')
+    api.add_resource(account.SignIn, '/signin')
+    api.add_resource(account.Logout, '/logout')
+
+    api.add_resource(extension.Extension, '/extension')
+    api.add_resource(goingout.Goingout, '/goingout')
+    api.add_resource(stay.Stay, '/stay')
 
 
 if __name__ == '__main__':
