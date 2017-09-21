@@ -1,6 +1,6 @@
 from flask import request, session, Response, abort
 from flask_restful import Resource
-import uuid
+import uuid as _uuid
 
 from support.user.user_manager import get_admin_id_from_request
 from support.crypto import *
@@ -35,7 +35,7 @@ class AddAccount(Resource):
             return '', 201
 
 
-class SignIn(Resource):
+class AdminSignIn(Resource):
     """
     관리자 계정 로그인
     """
@@ -47,7 +47,7 @@ class SignIn(Resource):
         if admin_acc.find_one({'id': _id, 'pw': pw}):
             # 로그인 성공
             resp = Response('', 201)
-            sid = str(uuid.uuid4())
+            sid = str(_uuid.uuid4())
 
             if keep_login:
                 # 로그인 유지 - 쿠키
@@ -68,7 +68,7 @@ class SignIn(Resource):
             return '', 204
 
 
-class Logout(Resource):
+class AdminLogout(Resource):
     """
     로그아웃
     """

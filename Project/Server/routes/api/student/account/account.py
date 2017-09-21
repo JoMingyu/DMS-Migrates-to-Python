@@ -1,8 +1,8 @@
 from flask import request, session, Response
 from flask_restful import Resource
-import uuid
+import uuid as _uuid
 
-from support.user.user_manager import get_uid_from_request
+from support.user.user_manager import get_uuid_from_request
 from support.crypto import *
 
 from database.mongodb import student_acc
@@ -14,25 +14,26 @@ class Signup(Resource):
     uuid 기반 학생 회원가입
     """
     def post(self):
-        _uuid = sha.encrypt(request.form.get('_uuid'))
+        uuid = sha.encrypt(request.form.get('uuid'))
         _id = aes.encrypt(request.form.get('id'))
         pw = sha.encrypt(request.form.get('pw'))
 
-        if not student_acc.find_one({'uuid': _uuid}):
+        if not student_acc.find_one({'uuid': uuid}):
             # 1. uuid가 존재하지 않음
             return '', 204
-        elif student_acc.find_one({'uuid': _uuid})['id'] is not None:
+        elif student_acc.find_one({'uuid': uuid})['id'] is not None:
             # 2. 이미 회원가입 완료된 uuid
             return '', 204
         elif student_acc.find_one({'id': _id}):
             # 3. 이미 가입되어 있는 id
-            return '', 204
+            return 'c', 204
 
-        data = dict(student_acc.find_one({'uuid': _uuid}))
+        data = student_acc.find_one({'uuid': uuid})
         data.update({
             'id': _id,
             'pw': pw
         })
+        student_acc.update({'uuid': uuid}, data)
 
         return '', 201
 
@@ -49,7 +50,7 @@ class SignIn(Resource):
         if student_acc.find_one({'id': _id, 'pw': pw}):
             # 로그인 성공
             resp = Response('', 201)
-            sid = str(uuid.uuid4())
+            sid = str(_uuid.uuid4())
 
             if keep_login:
                 # 로그인 유지 - 쿠키
@@ -75,13 +76,13 @@ class Logout(Resource):
     로그아웃
     """
     def post(self):
-        uid = get_uid_from_request(request, session)
-        if uid:
-            data = student_acc.find_one({'uid': uid})
+        uuid = get_uuid_from_request(request, session)
+        if uuid:
+            data = student_acc.find_one({'uuid': uuid})
             data.update({
                 'sid': None
             })
-            student_acc.update({'uid': uid}, data)
+            student_acc.update({'uuid': uuid}, data)
 
             resp = Response('', 201)
             if 'UserSession' in request.cookies:
