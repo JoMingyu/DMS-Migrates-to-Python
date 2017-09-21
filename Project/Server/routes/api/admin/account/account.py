@@ -8,6 +8,7 @@ from support.crypto import *
 from database.mongodb import admin_acc
 
 
+# 관리자 계정의 구성 : id, 비밀번호, 주인, sid
 class AddAccount(Resource):
     """
     새로운 관리자 계정 추가
@@ -72,7 +73,16 @@ class Logout(Resource):
     로그아웃
     """
     def post(self):
-        if get_admin_id_from_request(request, session):
+        _id = get_admin_id_from_request(request, session)
+
+        if _id:
+            data = dict(admin_acc.find_one({'id': _id}))
+            data.update({
+                'sid': None
+            })
+            admin_acc.update({'id': _id}, data)
+            # SID 초기화
+
             resp = Response('', 201)
             if 'AdminSession' in request.cookies:
                 resp.set_cookie('AdminSession', '', expires=0)
