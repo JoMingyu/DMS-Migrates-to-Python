@@ -8,7 +8,7 @@ from database.mongodb import goingout
 
 class Goingout(Resource):
     """
-    외출신청
+    외출신청(POST, GET, DELETE available)
     """
     def post(self):
         uuid = get_uuid_from_request(request, session)

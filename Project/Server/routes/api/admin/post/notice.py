@@ -8,6 +8,9 @@ from pymongo.collection import ObjectId
 
 
 class Notice(Resource):
+    """
+    Notice(POST, DELETE, GET, PATCH available)
+    """
     def post(self):
         if not get_admin_id_from_request(request, session):
             abort(403)

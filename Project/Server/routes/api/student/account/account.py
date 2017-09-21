@@ -11,7 +11,7 @@ from database.mongodb import student_acc
 # 학생 계정의 구성 : uuid, 학번, 이름, id, 비밀번호, sid
 class Signup(Resource):
     """
-    uuid 기반 학생 회원가입
+    uuid 기반 학생 회원가입(POST available)
     """
     def post(self):
         uuid = sha.encrypt(request.form.get('uuid'))
@@ -40,7 +40,7 @@ class Signup(Resource):
 
 class SignIn(Resource):
     """
-    학생 로그인
+    학생 로그인(POST available)
     """
     def post(self):
         _id = aes.encrypt(request.form.get('id'))
@@ -73,7 +73,7 @@ class SignIn(Resource):
 
 class Logout(Resource):
     """
-    로그아웃
+    로그아웃(POST available)
     """
     def post(self):
         uuid = get_uuid_from_request(request, session)

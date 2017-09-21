@@ -11,7 +11,7 @@ from database.mongodb import admin_acc
 # 관리자 계정의 구성 : id, 비밀번호, 주인, sid
 class AddAccount(Resource):
     """
-    새로운 관리자 계정 추가
+    새로운 관리자 계정 추가(POST available)
     """
     def post(self):
         if not get_admin_id_from_request(request, session):
@@ -37,7 +37,7 @@ class AddAccount(Resource):
 
 class AdminSignIn(Resource):
     """
-    관리자 계정 로그인
+    관리자 계정 로그인(POST available)
     """
     def post(self):
         _id = aes.encrypt(request.form.get('id'))
@@ -70,7 +70,7 @@ class AdminSignIn(Resource):
 
 class AdminLogout(Resource):
     """
-    로그아웃
+    로그아웃(POST available)
     """
     def post(self):
         _id = get_admin_id_from_request(request, session)

@@ -9,7 +9,7 @@ from database.mongodb import student_acc
 
 class InitializeStudent(Resource):
     """
-    학생 계정을 재가입 가능하도록 초기화
+    학생 계정을 재가입 가능하도록 초기화(POST available)
     """
     def post(self):
         if not get_admin_id_from_request(request, session):

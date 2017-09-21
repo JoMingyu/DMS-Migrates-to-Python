@@ -8,7 +8,7 @@ from database.mongodb import stay
 
 class Stay(Resource):
     """
-    잔류신청
+    잔류신청(POST, GET, DELETE available)
     """
     def post(self):
         uuid = get_uuid_from_request(request, session)

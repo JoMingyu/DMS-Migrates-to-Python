@@ -8,7 +8,7 @@ from database.mongodb import extension
 
 class Extension(Resource):
     """
-    연장신청
+    연장신청(POST, GET, DELETE available)
     """
     def post(self):
         uuid = get_uuid_from_request(request, session)
