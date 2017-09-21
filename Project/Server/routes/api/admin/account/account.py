@@ -19,7 +19,7 @@ class AddAccount(Resource):
 
         _id = aes.encrypt(request.form.get('id'))
         pw = sha.encrypt(request.form.get('pw'))
-        owner = aes.encrypt(request.form.get('owner', '주인 없음', str))
+        owner = aes.encrypt(request.form.get('owner'))
 
         if admin_acc.find_one({'id': _id}):
             # 이미 가입되어 있는 ID

@@ -11,32 +11,32 @@ class Stay(Resource):
     잔류신청
     """
     def post(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
         value = request.form.get('value', 4, int)
 
-        stay.remove({'uid': uid})
+        stay.remove({'uuid': uuid})
         stay.insert({
-            'uid': uid,
+            'uuid': uuid,
             'value': value
         })
 
         return '', 201
 
     def get(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
-        return stay.find_one({'uid': uid}, {'_id': False}), 200
+        return stay.find_one({'uuid': uuid}, {'_id': False}), 200
 
     def delete(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
-        stay.remove({'uid': uid})
+        stay.remove({'uuid': uuid})
 
         return '', 200

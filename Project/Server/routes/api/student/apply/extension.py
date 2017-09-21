@@ -11,16 +11,16 @@ class Extension(Resource):
     연장신청
     """
     def post(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
         _class = request.form.get('class')
         value = request.form.get('value', 1, int)
 
-        extension.remove({'uid': uid})
+        extension.remove({'uuid': uuid})
         extension.insert({
-            'uid': uid,
+            'uuid': uuid,
             'class': _class,
             'value': value
         })
@@ -28,17 +28,17 @@ class Extension(Resource):
         return '', 201
 
     def get(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
-        return extension.find_one({'uid': uid}, {'_id': False}), 200
+        return extension.find_one({'uuid': uuid}, {'_id': False}), 200
 
     def delete(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
-        extension.remove({'uid': uid})
+        extension.remove({'uuid': uuid})
 
         return '', 200

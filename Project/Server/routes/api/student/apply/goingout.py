@@ -11,16 +11,16 @@ class Goingout(Resource):
     외출신청
     """
     def post(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
         sat = request.form.get('sat', False, bool)
         sun = request.form.get('sun', False, bool)
 
-        goingout.remove({'uid': uid})
+        goingout.remove({'uuid': uuid})
         goingout.insert({
-            'uid': uid,
+            'uuid': uuid,
             'sat': sat,
             'sun': sun
         })
@@ -28,17 +28,17 @@ class Goingout(Resource):
         return '', 201
 
     def get(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
-        return goingout.find_one({'uid': uid}, {'_id': False}), 200
+        return goingout.find_one({'uuid': uuid}, {'_id': False}), 200
 
     def delete(self):
-        uid = get_uuid_from_request(request, session)
-        if not uid:
+        uuid = get_uuid_from_request(request, session)
+        if not uuid:
             return '', 204
 
-        goingout.remove({'uid': uid})
+        goingout.remove({'uuid': uuid})
 
         return '', 200

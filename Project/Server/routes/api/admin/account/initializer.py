@@ -15,7 +15,7 @@ class InitializeStudent(Resource):
         if not get_admin_id_from_request(request, session):
             return '', 403
 
-        number = aes.encrypt(request.form.get('number'))
+        number = aes.encrypt(request.form.get('number', type=int))
 
         data = student_acc.find_one({'number': number})
         data.update({
