@@ -35,7 +35,6 @@ class Migration(Resource):
                 if aes.decrypt(d['number']) > 30000:
                     student_acc.remove({'number': d['number']})
 
-
         def read_legacy_data():
             data = list()
             # Some logic..

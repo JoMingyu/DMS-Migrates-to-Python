@@ -56,7 +56,7 @@ class SignIn(Resource):
                 # 로그인 비유지 - 세션
                 session['AdminSession'] = sid
 
-            data = dict(admin_acc.find_one({'id': _id}))
+            data = admin_acc.find_one({'id': _id})
             data.update({
                 'sid': sid
             })
@@ -76,7 +76,7 @@ class Logout(Resource):
         _id = get_admin_id_from_request(request, session)
 
         if _id:
-            data = dict(admin_acc.find_one({'id': _id}))
+            data = admin_acc.find_one({'id': _id})
             data.update({
                 'sid': None
             })

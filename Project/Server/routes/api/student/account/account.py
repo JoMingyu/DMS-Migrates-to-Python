@@ -58,7 +58,7 @@ class SignIn(Resource):
                 # 로그인 비유지 - 세션
                 session['UserSession'] = sid
 
-            data = dict(student_acc.find_one({'id': _id}))
+            data = student_acc.find_one({'id': _id})
             data.update({
                 'sid': sid
             })
@@ -77,7 +77,7 @@ class Logout(Resource):
     def post(self):
         uid = get_uid_from_request(request, session)
         if uid:
-            data = dict(student_acc.find_one({'uid': uid}))
+            data = student_acc.find_one({'uid': uid})
             data.update({
                 'sid': None
             })

@@ -17,7 +17,7 @@ class InitializeStudent(Resource):
 
         number = aes.encrypt(request.form.get('number'))
 
-        data = dict(student_acc.find_one({'number': number}))
+        data = student_acc.find_one({'number': number})
         data.update({
             'id': None,
             'pw': None,
