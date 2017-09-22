@@ -11,6 +11,8 @@ api = Api(app)
 logger = None
 
 
+# 커맨드 라인 args 파싱
+
 @app.before_first_request
 def before_first_request():
     from logging.handlers import RotatingFileHandler
@@ -54,13 +56,15 @@ def teardown_appcontext(exception):
 
 def add_admin_resources():
     from routes.api.admin.account import account, initializer
-    from routes.api.admin.apply_xlsx import afterschool_xlsx, extension_xlsx, goingout_xlsx, report_facility_xlsx, stay_xlsx
+    from routes.api.admin.apply import afterschool, afterschool_xlsx, extension_xlsx, goingout_xlsx, report_facility_xlsx, stay_xlsx
     from routes.api.admin.post import faq, notice, rule
 
     api.add_resource(account.AddAccount, '/admin/add-account')
     api.add_resource(account.AdminSignIn, '/admin/signin')
     api.add_resource(account.AdminLogout, '/admin/logout')
     api.add_resource(initializer.InitializeStudent, '/admin/initialize-student')
+
+    api.add_resource(afterschool.AfterschoolItem, '/admin/afterschool-item')
 
     api.add_resource(faq.FAQ, '/admin/faq')
     api.add_resource(notice.Notice, '/admin/notice')
@@ -84,6 +88,8 @@ def add_student_resources():
     api.add_resource(account.SignIn, '/signin')
     api.add_resource(account.Logout, '/logout')
 
+    api.add_resource(afterschool.Afterschool, '/afterschool/list')
+    api.add_resource(afterschool.AfterschoolApply, '/afterschool/apply')
     api.add_resource(extension.Extension, '/extension')
     api.add_resource(goingout.Goingout, '/goingout')
     api.add_resource(stay.Stay, '/stay')

@@ -9,7 +9,7 @@ from database.mongodb import student_acc
 
 class NewUUID(Resource):
     """
-    새로운 UUID 생성
+    새로운 UUID 생성(POST available)
     """
     def post(self):
         number = request.form.get('number', type=int)
@@ -25,7 +25,7 @@ class NewUUID(Resource):
             'name': aes.encrypt(name)
         })
 
-        return _uuid, 201
+        return uuid, 201
 
 
 class Migration(Resource):
